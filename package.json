@@ -1,5 +1,5 @@
 {
-    "name": "music-o-tron",
+    "name": "cadence",
     "version": "0.0.1",
     "description": "Discord bot",
     "main": "index.js",
@@ -12,7 +12,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/battmeech/music-o-tron.git"
+        "url": "git+https://github.com/battmeech/cadence.git"
     },
     "keywords": [
         "discord",
@@ -21,9 +21,9 @@
     "author": "Daniel Austin, Matthew Beech",
     "license": "GPL-3.0",
     "bugs": {
-        "url": "https://github.com/battmeech/music-o-tron/issues"
+        "url": "https://github.com/battmeech/cadence/issues"
     },
-    "homepage": "https://github.com/battmeech/music-o-tron#readme",
+    "homepage": "https://github.com/battmeech/cadence#readme",
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
         "@ensemblebr/dice": "^3.0.0",

@@ -8,7 +8,7 @@ export default class extends Command {
     constructor() {
         super({
             name: 'ping',
-            description: 'Calculates latency between discord and bot',
+            description: 'Calculates latency between discord and bot.',
         })
     }
 

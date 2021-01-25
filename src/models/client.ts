@@ -5,7 +5,7 @@ import fs from 'fs'
 /**
  * An extension of the discord.js Client class, which also includes commands.
  */
-export class MusicOTron extends Client {
+export class Cadence extends Client {
     commands: Collection<string, Command> = new Collection()
 
     constructor(options?: ClientOptions) {
@@ -17,7 +17,7 @@ export class MusicOTron extends Client {
             import(`../commands/${file}`).then((commandClass) => {
                 const command: Command = new commandClass.default()
 
-                if (command.name) {
+                if (command instanceof Command) {
                     this.commands.set(command.name, command)
                 }
             })
@@ -25,4 +25,4 @@ export class MusicOTron extends Client {
     }
 }
 
-async function Blah(client: MusicOTron) {}
+async function Blah(client: Cadence) {}

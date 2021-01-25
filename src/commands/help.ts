@@ -9,7 +9,7 @@ export default class extends Command {
     constructor() {
         super({
             name: 'help',
-            description: 'Returns some help stuff to the user',
+            description: 'Returns this helpful message!',
         })
     }
 
@@ -17,7 +17,7 @@ export default class extends Command {
         const messageEmbed = new MessageEmbed()
         messageEmbed.setTitle('🎵 Available commands 🎵')
         messageEmbed.setDescription(
-            'Music-o-tron is here for all your musical needs. Here are the functions I can perform.'
+            'Cadence is here for all your musical needs. Here are the functions I can perform.'
         )
         client.commands.forEach((command) => {
             messageEmbed.addField(`!${command.name}`, command.description)

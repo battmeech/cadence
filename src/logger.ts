@@ -1,4 +1,4 @@
-import * as winston from 'winston'
+import * as winston from 'winston';
 
 export const logger = winston.createLogger({
     level: 'info',
@@ -10,11 +10,11 @@ export const logger = winston.createLogger({
             (info) => `[${info.timestamp}] ${info.level}: ${info.message}`
         )
     ),
-    defaultMeta: { service: 'music' },
+    defaultMeta: { service: 'cadence' },
     transports: [
         new winston.transports.Console({
             level: 'debug',
             handleExceptions: true,
         }),
     ],
-})
+});

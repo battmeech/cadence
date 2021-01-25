@@ -2,18 +2,18 @@ import { Message } from 'discord.js'
 import dotenv from 'dotenv'
 import { prefix } from './config.json'
 import { logger } from './logger'
-import { MusicOTron } from './models/client'
+import { Cadence } from './models/client'
 import { parseMessage } from './utils/utils'
 
 // Initialise dotenv config - if you're doing config that way
 dotenv.config()
 
-export const client = new MusicOTron()
+export const client = new Cadence()
 
 client.on('ready', () => {
     // This event will run if the bot starts, and logs in, successfully.
     logger.info(
-        `Music-o-tron is playing to ${client.users.cache.size} users in ${client.guilds.cache.size} guilds.`
+        `Cadence is playing to ${client.users.cache.size} users in ${client.guilds.cache.size} guilds.`
     )
 
     // Example of changing the bot's playing game to something useful. `client.user` is what the
