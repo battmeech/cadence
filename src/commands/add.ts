@@ -1,12 +1,9 @@
-import { Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { client } from '..';
 import { Command } from '../models/command';
 import { Song } from '../models/song';
 import { fetchVideoInfo } from '../service/song';
 
-/**
- * Given add command, add a track to the playlist.
- */
 export default class extends Command {
     constructor() {
         super({

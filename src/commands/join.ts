@@ -2,9 +2,6 @@ import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import { client } from '..';
 import { Command } from '../models/command';
 
-/**
- * Given join command, join the voice chat of the user who sent it.
- */
 export default class extends Command {
     constructor() {
         super({
