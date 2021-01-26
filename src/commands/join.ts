@@ -12,16 +12,7 @@ export default class extends Command {
     }
 
     async run(message: Message) {
-        const settings = client.musicSettings.get(message.guild!.id);
-
-        if (!settings) {
-            return message.channel.send(
-                new MessageEmbed({
-                    description:
-                        'Something went wrong when joining your voice channel.',
-                })
-            );
-        }
+        const settings = client.musicSettings.get(message.guild!.id)!;
 
         if (!settings.voiceChannel) {
             try {
