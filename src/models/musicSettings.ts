@@ -3,38 +3,39 @@ import {
     VoiceConnection,
     StreamDispatcher,
     TextChannel,
-} from 'discord.js'
-import ytdl from 'ytdl-core'
-import { logger } from '../logger'
-import { Song } from './song'
-import { prefix } from '../config.json'
+    MessageEmbed,
+} from 'discord.js';
+import ytdl from 'ytdl-core';
+import { logger } from '../logger';
+import { Song } from './song';
+import { prefix } from '../config.json';
 
 export class MusicSettings {
     /** The queued up songs */
-    songs: Song[]
+    songs: Song[];
     /** Which song in the queue is currently being played (0 based index) */
-    musicIndex: number
+    musicIndex: number;
     /** The volume which Cadence will play the music */
-    volume: number
+    volume: number;
     /** Whether or not a song should loop */
-    loop: boolean
+    loop: boolean;
     /** Whether or not music is currenty playing */
-    playing: boolean
+    playing: boolean;
     /** The voice channel which Purrito is playing in */
-    voiceChannel?: VoiceChannel
+    voiceChannel?: VoiceChannel;
     /** Information about the connection to the voice channel */
-    connection?: VoiceConnection
+    connection?: VoiceConnection;
     /** The music controller */
-    dispatcher?: StreamDispatcher
+    dispatcher?: StreamDispatcher;
     /** The text channel the +join request came from */
-    textChannel?: TextChannel
+    textChannel?: TextChannel;
 
     constructor() {
-        this.songs = []
-        this.volume = 5
-        this.loop = false
-        this.playing = false
-        this.musicIndex = 1
+        this.songs = [];
+        this.volume = 5;
+        this.loop = false;
+        this.playing = false;
+        this.musicIndex = 1;
     }
 
     /** Attempt to join the voice channel, and log store a text channel */
@@ -44,66 +45,66 @@ export class MusicSettings {
     ) {
         if (voiceChannel) {
             try {
-                this.voiceChannel = voiceChannel
-                this.connection = await voiceChannel.join()
-                this.textChannel = textChannel
+                this.voiceChannel = voiceChannel;
+                this.connection = await voiceChannel.join();
+                this.textChannel = textChannel;
             } catch (error) {
-                logger.debug(error)
-                throw Error('⚠️ I had trouble joining that channel.')
+                logger.debug(error);
+                throw Error('⚠️ I had trouble joining that channel.');
             }
         } else {
-            throw Error('⚠️ Join a voice channel so I can join you')
+            throw Error('⚠️ Join a voice channel so I can join you');
         }
     }
 
     /** Leave the voice channel that the bot is currently in */
     leaveVoiceChannel() {
         if (this.voiceChannel) {
-            this.voiceChannel.leave()
-            this.voiceChannel = undefined
-            this.connection = undefined
-            this.dispatcher = undefined
-            this.playing = false
-            this.textChannel = undefined
-            this.musicIndex = 1
+            this.voiceChannel.leave();
+            this.voiceChannel = undefined;
+            this.connection = undefined;
+            this.dispatcher = undefined;
+            this.playing = false;
+            this.textChannel = undefined;
+            this.musicIndex = 1;
         } else {
             throw Error(
                 `⚠️ I'm not in a voice channel, use \`${prefix}join\` while in a voice channel and I'll join you`
-            )
+            );
         }
     }
 
     /** Pause the currently playing music */
     pauseMusic() {
         if (this.playing && this.dispatcher) {
-            this.dispatcher.pause()
-            this.playing = false
+            this.dispatcher.pause();
+            this.playing = false;
         } else {
-            throw Error(`⚠️ I'm not playing anything, try \`${prefix}play\``)
+            throw Error(`⚠️ I'm not playing anything, try \`${prefix}play\``);
         }
     }
 
     /** Add a new song to the playlist */
     addSong(song: Song) {
-        this.songs.push(song)
+        this.songs.push(song);
     }
 
     /** Remove a song from the playlist and ensure the list is up to date */
     removeSong(songIndex: number): Song | undefined {
-        const toRemove = Number(songIndex - 1)
-        const [song] = this.songs.splice(toRemove, 1)
-        this.musicIndex = this.musicIndex - 1
+        const toRemove = Number(songIndex - 1);
+        const [song] = this.songs.splice(toRemove, 1);
+        this.musicIndex = this.musicIndex - 1;
         if (!this.playing && this.musicIndex < 1) {
-            this.musicIndex = 1
+            this.musicIndex = 1;
         }
 
         this.songs.forEach((song) => {
             if (song.positionInQueue > toRemove) {
-                song.positionInQueue = song.positionInQueue - 1
+                song.positionInQueue = song.positionInQueue - 1;
             }
-        })
+        });
 
-        return song
+        return song;
     }
 
     /** Play the music from the playlist */
@@ -111,88 +112,123 @@ export class MusicSettings {
         if (this.songs.length === 0) {
             throw Error(
                 `⚠️ The queue is empty right now, use \`${prefix}add\` to add some songs`
-            )
+            );
         } else if (!this.connection) {
             throw Error(
                 `⚠️ I'm not currently in a voice channel, try \`${prefix}join\` so I can play some music`
-            )
+            );
         }
 
         let nowPlaying = this.songs.find(
             (song) => song.positionInQueue === this.musicIndex
-        )
+        );
         if (!nowPlaying && this.songs.length > 0) {
             // If we've reached the end of the play list, and there are still songs in there, go back to the start
-            this.musicIndex = 1
-            nowPlaying = this.songs[0]
+            this.musicIndex = 1;
+            nowPlaying = this.songs[0];
         } else if (!nowPlaying && this.songs.length === 0) {
             // If we reach the end of the playlist and the playlist is empty, leave the voice channel
-            this.leaveVoiceChannel()
-            return
+            this.leaveVoiceChannel();
+            return;
         }
 
         if (this.dispatcher && !this.playing) {
-            this.dispatcher.resume()
-            this.playing = true
+            this.dispatcher.resume();
+            this.playing = true;
         } else if (this.playing) {
-            logger.debug('play called when already playing')
+            logger.debug('play called when already playing');
         } else {
             const song = ytdl(nowPlaying!.url, {
                 quality: 'highestaudio',
                 highWaterMark: 1 << 25,
-            })
+            });
 
             this.dispatcher = this.connection
                 ?.play(song)
                 .on('finish', () => {
-                    if (!this.loop) this.musicIndex = this.musicIndex + 1
-                    this.playing = false
-                    this.dispatcher = undefined
-                    this.playMusic()
+                    if (!this.loop) this.musicIndex = this.musicIndex + 1;
+                    this.playing = false;
+                    this.dispatcher = undefined;
+                    this.playMusic();
                 })
-                .on('error', (error) => console.log(error))
-            this.playing = true
-            this.setVolume(this.volume)
+                .on('error', (error) => console.log(error));
+            this.playing = true;
+            this.setVolume(this.volume);
             this.textChannel?.send(
                 nowPlaying!.createEmbed().setDescription('Now playing')
-            )
+            );
         }
     }
 
     /** Set everyting back to blank, essentially resetting all the music settings */
     reset() {
-        this.songs = []
-        this.voiceChannel?.leave()
-        this.voiceChannel = undefined
-        this.connection = undefined
-        this.dispatcher = undefined
-        this.playing = false
-        this.textChannel = undefined
-        this.musicIndex = 1
+        this.songs = [];
+        this.voiceChannel?.leave();
+        this.voiceChannel = undefined;
+        this.connection = undefined;
+        this.dispatcher = undefined;
+        this.playing = false;
+        this.textChannel = undefined;
+        this.musicIndex = 1;
     }
 
     /** Skip to the next song, or skip to a specific song in the playlist */
     skip(songNumber?: number) {
-        this.musicIndex = songNumber || this.musicIndex + 1
+        this.musicIndex = songNumber || this.musicIndex + 1;
 
         if (this.dispatcher) {
-            this.playing = false
-            this.dispatcher.pause()
-            this.dispatcher = undefined
-            this.playMusic()
+            this.playing = false;
+            this.dispatcher.pause();
+            this.dispatcher = undefined;
+            this.playMusic();
         }
     }
 
     /** Set the volume of the music Cadence is playing */
     setVolume(volume: number) {
-        this.volume = volume
+        this.volume = volume;
         if (this.dispatcher) {
-            this.dispatcher.setVolumeLogarithmic(volume / 5)
+            this.dispatcher.setVolumeLogarithmic(volume / 5);
         }
     }
 
     /** Change the loop setting */
     setLoop(loop: boolean) {
-        this.loop = loop
+        this.loop = loop;
+    }
+
+    /** Create an embed to show the settings to the user */
+    createEmbed(): MessageEmbed {
+        const embed = new MessageEmbed();
+
+        embed.setTitle('Music Queue');
+        embed.setDescription(
+            'Welcome to the best music event on Discord, here is the set list:'
+        );
+        this.songs.forEach((song) => {
+            if (this.musicIndex === song.positionInQueue) {
+                embed.addField(
+                    `${song.positionInQueue}. ${song.title} 🎵 ${
+                        this.playing ? 'Now playing' : 'On the deck'
+                    } 🎵`,
+                    `Requested by ${song.requestingUser.username}`
+                );
+            } else {
+                embed.addField(
+                    `${song.positionInQueue}. ${song.title}`,
+                    `Requested by ${song.requestingUser.username}`
+                );
+            }
+        });
+        embed.addField('Settings', [
+            `Looping: ${this.loop ? 'On' : 'Off'}`,
+            `Volume: ${this.volume}`,
+            `Voice channel: ${
+                this.voiceChannel ? this.voiceChannel.name : 'Not connected'
+            }`,
+        ]);
+        embed.setFooter([`Use +music help to find out more`]);
+
+        return embed;
     }
 }
