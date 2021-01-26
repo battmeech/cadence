@@ -9,7 +9,8 @@ export default class extends Command {
     constructor() {
         super({
             name: 'join',
-            description: 'Calculates latency between discord and bot.',
+            description:
+                'Join the voice channel the requester is currently in.',
         });
     }
 
