@@ -7,6 +7,7 @@ export default class extends MusicCommand {
         super({
             name: language('RESET_COMMAND_NAME'),
             description: language('RESET_COMMAND_HELPFUL_DESCRIPTION'),
+            permissions: ['ADMINISTRATOR'],
         });
     }
 

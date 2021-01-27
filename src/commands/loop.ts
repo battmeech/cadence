@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message } from 'discord.js';
 import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
