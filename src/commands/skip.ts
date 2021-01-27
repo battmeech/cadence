@@ -1,5 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { prefix } from '../config.json';
+import { logger } from '../logger';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
@@ -34,7 +35,15 @@ export default class extends MusicCommand {
                 settings.skip(skipTo);
             }
         } else {
-            settings.skip();
+            if (settings.songs.length === 0) {
+                message.channel.send(
+                    new MessageEmbed({
+                        description: `🎶 No songs in queue yet, try the \`${prefix}add\` command`,
+                    })
+                );
+            } else {
+                settings.skip();
+            }
         }
     }
 }
