@@ -11,7 +11,7 @@ export default class extends MusicCommand {
         });
     }
 
-    async run(message: Message, args: string[]) {
+    run(message: Message, args: string[]) {
         const settings = this.musicSettings.get(message.guild!.id)!;
 
         const [songIndex] = args;

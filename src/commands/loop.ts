@@ -9,7 +9,7 @@ export default class extends MusicCommand {
         });
     }
 
-    async run(message: Message) {
+    run(message: Message) {
         const settings = this.musicSettings.get(message.guild!.id)!;
 
         settings.setLoop(!settings.loop);

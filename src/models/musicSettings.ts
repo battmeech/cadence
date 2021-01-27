@@ -13,7 +13,7 @@ import { prefix } from '../config.json';
 export class MusicSettings {
     /** The queued up songs */
     songs: Song[];
-    /** Which song in the queue is currently being played (0 based index) */
+    /** Which song in the queue is currently being played (1 based index) */
     musicIndex: number;
     /** The volume which Cadence will play the music */
     volume: number;
