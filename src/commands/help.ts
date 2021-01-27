@@ -18,7 +18,13 @@ export default class extends Command {
             'Cadence is here for all your musical needs. Here are the functions I can perform.'
         );
         client.commands.forEach((command) => {
-            if (checkUserCanRun(message.member!, command.permissions)) {
+            if (
+                checkUserCanRun(
+                    message.member!,
+                    command.permissions,
+                    command.roles
+                )
+            ) {
                 messageEmbed.addField(`!${command.name}`, command.description);
             }
         });

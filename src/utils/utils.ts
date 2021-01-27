@@ -27,11 +27,22 @@ export function parseMessage(
  */
 export function checkUserCanRun(
     member: GuildMember,
-    permissions?: PermissionString[]
+    permissions?: PermissionString[],
+    roles?: string[]
 ): boolean {
-    if (!permissions) {
-        return true;
-    } else {
-        return member.hasPermission(permissions);
+    let canRun: boolean = true;
+
+    // If there is a role check, and the user is not an admin, ensure they have correct roles
+    if (roles && !member.hasPermission('ADMINISTRATOR')) {
+        canRun = member.roles.cache.some((role) =>
+            roles.includes(role.name.toLowerCase())
+        );
     }
+
+    // If canRun is still true, also check they have any required permissions
+    if (permissions && canRun) {
+        canRun = member.hasPermission(permissions);
+    }
+
+    return canRun;
 }

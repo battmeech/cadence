@@ -60,7 +60,13 @@ client.on('message', async (message: Message) => {
     const runnableCommand = client.commands.get(command);
 
     if (runnableCommand) {
-        if (checkUserCanRun(message.member!, runnableCommand.permissions)) {
+        if (
+            checkUserCanRun(
+                message.member!,
+                runnableCommand.permissions,
+                runnableCommand.roles
+            )
+        ) {
             runnableCommand.run(message, args);
         }
     }
