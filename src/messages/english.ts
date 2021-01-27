@@ -2,6 +2,8 @@ import { Messages } from '../models/messages';
 import { prefix } from '../config.json';
 
 const english: Messages = {
+    BOT_ACTIVITY: 'sweet music',
+
     ADD_COMMAND_HELPFUL_DESCRIPTION: 'Add a track to the playlist',
     ADD_COMMAND_NAME: 'add',
     ADD_COMMAND_NO_YOUTUBE_LINK:

@@ -1,6 +1,8 @@
 import Languages from '../messages/supportedLanguages';
 
 export type Messages = {
+    BOT_ACTIVITY: string;
+
     ADD_COMMAND_NAME: string;
     ADD_COMMAND_HELPFUL_DESCRIPTION: string;
     ADD_COMMAND_NO_YOUTUBE_LINK: string;

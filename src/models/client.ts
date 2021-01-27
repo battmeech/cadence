@@ -2,6 +2,7 @@ import { Client, ClientOptions, Collection, Message } from 'discord.js';
 import fs from 'fs';
 import { prefix } from '../config.json';
 import { logger } from '../logger';
+import { language } from '../messages/language';
 import { checkUserCanRun, parseMessage } from '../utils/utils';
 import { Command } from './command';
 import { SupportedLanguage } from './messages';
@@ -45,7 +46,7 @@ export class Cadence extends Client {
 
             // Example of changing the bot's playing game to something useful. `client.user` is what the
             // docs refer to as the "ClientUser".
-            this.user?.setActivity(`sweet beats`);
+            this.user?.setActivity(language('BOT_ACTIVITY'));
 
             // On start up create music settings for each guild
             this.guilds.cache.forEach((guild) =>
