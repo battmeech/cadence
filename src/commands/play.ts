@@ -1,11 +1,12 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'play',
-            description: 'Play the music in the playlist.',
+            name: language('PLAY_COMMAND_NAME'),
+            description: language('PLAY_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -14,24 +15,36 @@ export default class extends MusicCommand {
 
         // If there's no voice channel, attempt to join any channel the user is in
         if (!settings.voiceChannel) {
-            try {
-                await settings.joinVoiceChannel(
-                    message.member?.voice.channel!,
-                    message.channel as TextChannel
-                );
-                message.react('👍');
-            } catch (error) {
-                return message.reply(
-                    new MessageEmbed({ description: error.message })
+            if (message.member?.voice.channel) {
+                try {
+                    await settings.joinVoiceChannel(
+                        message.member.voice.channel,
+                        message.channel as TextChannel
+                    );
+                    message.react('👍');
+                } catch (error) {
+                    return message.reply(
+                        new MessageEmbed({ description: error.message })
+                    );
+                }
+            } else {
+                return message.channel.send(
+                    new MessageEmbed({
+                        description: language('JOIN_COMMAND_NO_VOICE_CHANNEL'),
+                    })
                 );
             }
         }
 
-        try {
+        if (settings.songs.length === 0) {
+            message.channel.send(
+                new MessageEmbed({
+                    description: language('PLAY_COMMAND_NO_MUSIC'),
+                })
+            );
+        } else {
             settings.playMusic();
             message.react('▶️');
-        } catch (error) {
-            message.reply(new MessageEmbed({ description: error.message }));
         }
     }
 }

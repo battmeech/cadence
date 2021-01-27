@@ -1,11 +1,12 @@
 import { Message, MessageEmbed } from 'discord.js';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'loop',
-            description: 'Toggle the loop settings.',
+            name: language('LOOP_COMMAND_NAME'),
+            description: language('LOOP_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -13,10 +14,6 @@ export default class extends MusicCommand {
         const settings = this.musicSettings.get(message.guild!.id)!;
 
         settings.setLoop(!settings.loop);
-        message.channel.send(
-            new MessageEmbed({
-                description: `Looping is now ${settings.loop ? 'on' : 'off'}`,
-            })
-        );
+        message.react(settings.loop ? '👌' : '✋');
     }
 }

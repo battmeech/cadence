@@ -67,12 +67,8 @@ export class MusicSettings {
 
     /** Pause the currently playing music */
     pauseMusic() {
-        if (this.playing && this.dispatcher) {
-            this.dispatcher.pause();
-            this.playing = false;
-        } else {
-            throw Error(`⚠️ I'm not playing anything, try \`${prefix}play\``);
-        }
+        this.dispatcher!.pause();
+        this.playing = false;
     }
 
     /** Add a new song to the playlist */
@@ -100,16 +96,6 @@ export class MusicSettings {
 
     /** Play the music from the playlist */
     playMusic() {
-        if (this.songs.length === 0) {
-            throw Error(
-                `⚠️ The queue is empty right now, use \`${prefix}add\` to add some songs`
-            );
-        } else if (!this.connection) {
-            throw Error(
-                `⚠️ I'm not currently in a voice channel, try \`${prefix}join\` so I can play some music`
-            );
-        }
-
         let nowPlaying = this.songs.find(
             (song) => song.positionInQueue === this.musicIndex
         );

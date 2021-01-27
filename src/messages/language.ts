@@ -1,9 +1,14 @@
-import { SupportedLanguage } from '../models/messages';
-import english from './english';
+import { Messages, SupportedLanguage } from '../models/messages';
 import SupportedLanguages from './supportedLanguages';
 
-export function language(message: keyof typeof english) {
+export function language(message: keyof Messages, input?: any): string {
     const language: SupportedLanguage = process.env.LANGUAGE as any;
 
-    return SupportedLanguages[language][message];
+    const foundMessage = SupportedLanguages[language][message];
+
+    if (typeof foundMessage === 'string') {
+        return foundMessage;
+    } else {
+        return foundMessage(input);
+    }
 }
