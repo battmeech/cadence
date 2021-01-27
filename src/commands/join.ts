@@ -1,28 +1,38 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'join',
-            description:
-                'Join the voice channel the requester is currently in.',
+            name: language('JOIN_COMMAND_NAME'),
+            description: language('JOIN_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
     async run(message: Message) {
         const settings = this.musicSettings.get(message.guild!.id)!;
 
-        if (!settings.voiceChannel) {
-            try {
-                await settings.joinVoiceChannel(
-                    message.member?.voice.channel!,
-                    message.channel as TextChannel
-                );
-                message.react('👍');
-            } catch (error) {
-                message.reply(new MessageEmbed({ description: error.message }));
+        if (message.member?.voice.channel) {
+            if (!settings.voiceChannel) {
+                try {
+                    await settings.joinVoiceChannel(
+                        message.member.voice.channel,
+                        message.channel as TextChannel
+                    );
+                    message.react('👍');
+                } catch (error) {
+                    message.reply(
+                        new MessageEmbed({ description: error.message })
+                    );
+                }
             }
+        } else {
+            message.channel.send(
+                new MessageEmbed({
+                    description: language('JOIN_COMMAND_NO_VOICE_CHANNEL'),
+                })
+            );
         }
     }
 }

@@ -1,4 +1,5 @@
 import { Collection, Message, MessageEmbed } from 'discord.js';
+import { language } from '../messages/language';
 import { Cadence } from '../models/client';
 import { Command } from '../models/command';
 import { checkUserCanRun } from '../utils/utils';
@@ -8,17 +9,15 @@ export default class extends Command {
 
     constructor() {
         super({
-            name: 'help',
-            description: 'Returns this helpful message!',
+            name: language('HELP_COMMAND_NAME'),
+            description: language('HELP_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
     run(message: Message): void {
         const messageEmbed = new MessageEmbed();
-        messageEmbed.setTitle('🎵 Available commands 🎵');
-        messageEmbed.setDescription(
-            'Cadence is here for all your musical needs. Here are the functions I can perform.'
-        );
+        messageEmbed.setTitle(language('HELP_COMMAND_EMBED_TITLE'));
+        messageEmbed.setDescription(language('HELP_COMMAND_EMBED_DESCRIPTION'));
         this.commands.forEach((command) => {
             if (
                 checkUserCanRun(

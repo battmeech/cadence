@@ -1,5 +1,4 @@
 import { Message, PermissionString } from 'discord.js';
-import { logger } from '../logger';
 import { Cadence } from './client';
 
 interface ICommand {
@@ -10,9 +9,8 @@ interface ICommand {
 }
 
 /**
- * Represents a basic command. Plans to add future functionality
- * here e.g. roles required to perform a command
- * */
+ * Represents a basic command.
+ */
 export abstract class Command implements ICommand {
     name: string;
     description?: string;

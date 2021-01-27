@@ -1,6 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { prefix } from '../config.json';
-import { logger } from '../logger';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {

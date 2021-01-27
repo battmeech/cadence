@@ -1,4 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
+import ytdl from 'ytdl-core';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 import { Song } from '../models/song';
 import { fetchVideoInfo } from '../service/song';
@@ -6,8 +8,8 @@ import { fetchVideoInfo } from '../service/song';
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'add',
-            description: 'Add a track to the playlist',
+            name: language('ADD_COMMAND_NAME'),
+            description: language('ADD_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -19,12 +21,18 @@ export default class extends MusicCommand {
         if (!url) {
             message.channel.send(
                 new MessageEmbed({
-                    description:
-                        "🎶 Give me a YouTube link and I'll add it to the queue",
+                    description: language('ADD_COMMAND_NO_YOUTUBE_LINK'),
                 })
             );
         } else {
-            const videoInfo = await fetchVideoInfo(url);
+            let videoInfo: ytdl.videoInfo;
+            try {
+                videoInfo = await fetchVideoInfo(url);
+            } catch (error) {
+                return message.channel.send(
+                    new MessageEmbed({ description: error.message })
+                );
+            }
             const song = new Song(
                 videoInfo,
                 settings.songs.length + 1,

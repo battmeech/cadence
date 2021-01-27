@@ -1,27 +1,34 @@
 import { Client, ClientOptions, Collection, Message } from 'discord.js';
-import { Command } from './command';
 import fs from 'fs';
-import { MusicSettings } from './musicSettings';
-import { logger } from '../logger';
-import { parseMessage, checkUserCanRun } from '../utils/utils';
 import { prefix } from '../config.json';
+import { logger } from '../logger';
+import { checkUserCanRun, parseMessage } from '../utils/utils';
+import { Command } from './command';
+import { SupportedLanguage } from './messages';
+import { MusicSettings } from './musicSettings';
 
 /**
  * An extension of the discord.js Client class, which also includes commands.
  */
 export class Cadence extends Client {
     commands: Collection<string, Command> = new Collection();
-
+    language: SupportedLanguage = 'english';
     musicSettings: Collection<string, MusicSettings> = new Collection();
 
-    constructor(token?: string, options?: ClientOptions) {
+    constructor(
+        cadenceOptions?: { token?: string; language?: SupportedLanguage },
+        options?: ClientOptions
+    ) {
         super(options);
+
+        if (cadenceOptions?.language) this.language = cadenceOptions.language;
+        process.env.LANGUAGE = this.language;
 
         // Initialises all the commands found in the /commands directory
         const commandFiles = fs.readdirSync(__dirname + '/../commands');
         for (const file of commandFiles) {
             import(`../commands/${file}`).then((commandClass) => {
-                const command: Command = new commandClass.default();
+                const command = new commandClass.default();
 
                 if (command instanceof Command) {
                     command.init(this);
@@ -93,6 +100,6 @@ export class Cadence extends Client {
             }
         });
 
-        this.login(token);
+        this.login(cadenceOptions?.token);
     }
 }

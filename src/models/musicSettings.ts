@@ -9,6 +9,7 @@ import ytdl from 'ytdl-core';
 import { logger } from '../logger';
 import { Song } from './song';
 import { prefix } from '../config.json';
+import { language } from '../messages/language';
 
 export class MusicSettings {
     /** The queued up songs */
@@ -43,35 +44,25 @@ export class MusicSettings {
         voiceChannel: VoiceChannel,
         textChannel: TextChannel
     ) {
-        if (voiceChannel) {
-            try {
-                this.voiceChannel = voiceChannel;
-                this.connection = await voiceChannel.join();
-                this.textChannel = textChannel;
-            } catch (error) {
-                logger.debug(error);
-                throw Error('⚠️ I had trouble joining that channel.');
-            }
-        } else {
-            throw Error('⚠️ Join a voice channel so I can join you');
+        try {
+            this.voiceChannel = voiceChannel;
+            this.connection = await voiceChannel.join();
+            this.textChannel = textChannel;
+        } catch (error) {
+            logger.debug(error);
+            throw Error(language('ERROR_WHEN_JOINING_VOICE_CHANNEL'));
         }
     }
 
     /** Leave the voice channel that the bot is currently in */
     leaveVoiceChannel() {
-        if (this.voiceChannel) {
-            this.voiceChannel.leave();
-            this.voiceChannel = undefined;
-            this.connection = undefined;
-            this.dispatcher = undefined;
-            this.playing = false;
-            this.textChannel = undefined;
-            this.musicIndex = 1;
-        } else {
-            throw Error(
-                `⚠️ I'm not in a voice channel, use \`${prefix}join\` while in a voice channel and I'll join you`
-            );
-        }
+        this.voiceChannel!.leave();
+        this.voiceChannel = undefined;
+        this.connection = undefined;
+        this.dispatcher = undefined;
+        this.playing = false;
+        this.textChannel = undefined;
+        this.musicIndex = 1;
     }
 
     /** Pause the currently playing music */
