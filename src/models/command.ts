@@ -1,4 +1,6 @@
 import { Message, PermissionString } from 'discord.js';
+import { logger } from '../logger';
+import { Cadence } from './client';
 
 interface ICommand {
     name: string;
@@ -24,5 +26,11 @@ export abstract class Command implements ICommand {
         this.roles = command.roles;
     }
 
+    /** The command that will be executed */
     abstract run(message: Message, args?: string[]): void;
+
+    /** Any initialisation the command needs to do */
+    init(client?: Cadence) {
+        // Leave blank - can be overridden by subclasses
+    }
 }

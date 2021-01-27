@@ -1,10 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { client } from '..';
-import { Command } from '../models/command';
+import { MusicCommand } from '../models/musicCommand';
 import { Song } from '../models/song';
 import { fetchVideoInfo } from '../service/song';
 
-export default class extends Command {
+export default class extends MusicCommand {
     constructor() {
         super({
             name: 'add',
@@ -13,7 +12,7 @@ export default class extends Command {
     }
 
     async run(message: Message, args: [url: string, ...args: string[]]) {
-        const settings = client.musicSettings.get(message.guild!.id)!;
+        const settings = this.musicSettings.get(message.guild!.id)!;
 
         const [url] = args;
 

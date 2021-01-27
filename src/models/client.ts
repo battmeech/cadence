@@ -2,7 +2,6 @@ import { Client, ClientOptions, Collection, Message } from 'discord.js';
 import { Command } from './command';
 import fs from 'fs';
 import { MusicSettings } from './musicSettings';
-import { client } from '..';
 import { logger } from '../logger';
 import { parseMessage, checkUserCanRun } from '../utils/utils';
 import { prefix } from '../config.json';
@@ -25,6 +24,7 @@ export class Cadence extends Client {
                 const command: Command = new commandClass.default();
 
                 if (command instanceof Command) {
+                    command.init(this);
                     this.commands.set(command.name, command);
                 }
             });
@@ -33,12 +33,12 @@ export class Cadence extends Client {
         this.on('ready', () => {
             // This event will run if the bot starts, and logs in, successfully.
             logger.info(
-                `Cadence is playing to ${client.users.cache.size} users in ${client.guilds.cache.size} guilds.`
+                `Cadence is playing to ${this.users.cache.size} users in ${this.guilds.cache.size} guilds.`
             );
 
             // Example of changing the bot's playing game to something useful. `client.user` is what the
             // docs refer to as the "ClientUser".
-            client.user?.setActivity(`sweet beats`);
+            this.user?.setActivity(`sweet beats`);
 
             // On start up create music settings for each guild
             this.guilds.cache.forEach((guild) =>
@@ -78,7 +78,7 @@ export class Cadence extends Client {
 
             const { command, args } = parseMessage(message);
 
-            const runnableCommand = client.commands.get(command);
+            const runnableCommand = this.commands.get(command);
 
             if (runnableCommand) {
                 if (

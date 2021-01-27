@@ -1,9 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { client } from '..';
 import { prefix } from '../config.json';
-import { Command } from '../models/command';
+import { MusicCommand } from '../models/musicCommand';
 
-export default class extends Command {
+export default class extends MusicCommand {
     constructor() {
         super({
             name: 'skip',
@@ -12,7 +11,7 @@ export default class extends Command {
     }
 
     async run(message: Message, args: string[]) {
-        const settings = client.musicSettings.get(message.guild!.id)!;
+        const settings = this.musicSettings.get(message.guild!.id)!;
 
         const [songIndex] = args;
 

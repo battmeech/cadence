@@ -1,8 +1,7 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
-import { client } from '..';
-import { Command } from '../models/command';
+import { MusicCommand } from '../models/musicCommand';
 
-export default class extends Command {
+export default class extends MusicCommand {
     constructor() {
         super({
             name: 'join',
@@ -12,7 +11,7 @@ export default class extends Command {
     }
 
     async run(message: Message) {
-        const settings = client.musicSettings.get(message.guild!.id)!;
+        const settings = this.musicSettings.get(message.guild!.id)!;
 
         if (!settings.voiceChannel) {
             try {

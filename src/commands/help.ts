@@ -1,9 +1,11 @@
-import { Message, MessageEmbed } from 'discord.js';
-import { client } from '..';
+import { Collection, Message, MessageEmbed } from 'discord.js';
+import { Cadence } from '../models/client';
 import { Command } from '../models/command';
 import { checkUserCanRun } from '../utils/utils';
 
 export default class extends Command {
+    commands: Collection<string, Command> = new Collection();
+
     constructor() {
         super({
             name: 'help',
@@ -17,7 +19,7 @@ export default class extends Command {
         messageEmbed.setDescription(
             'Cadence is here for all your musical needs. Here are the functions I can perform.'
         );
-        client.commands.forEach((command) => {
+        this.commands.forEach((command) => {
             if (
                 checkUserCanRun(
                     message.member!,
@@ -30,5 +32,9 @@ export default class extends Command {
         });
 
         message.channel.send(messageEmbed);
+    }
+
+    init(client: Cadence) {
+        this.commands = client.commands;
     }
 }
