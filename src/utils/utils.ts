@@ -1,5 +1,5 @@
-import { Message } from 'discord.js'
-import config from '../config.json'
+import { GuildMember, Message, PermissionString } from 'discord.js';
+import config from '../config.json';
 
 /**
  * @description Parse the message into a command and a list of arguments which have been provided
@@ -11,8 +11,27 @@ import config from '../config.json'
 export function parseMessage(
     message: Message
 ): { command: string; args: string[] } {
-    const args = message.content.slice(config.prefix.length).trim().split(/ +/g)
-    const command = args.shift()!.toLowerCase()
+    const args = message.content
+        .slice(config.prefix.length)
+        .trim()
+        .split(/ +/g);
+    const command = args.shift()!.toLowerCase();
 
-    return { command, args }
+    return { command, args };
+}
+
+/**
+ * Check the user has permission to run a certain command
+ * @param member the member to check permissions of
+ * @param permissions permissions to be checked against
+ */
+export function checkUserCanRun(
+    member: GuildMember,
+    permissions?: PermissionString[]
+): boolean {
+    if (!permissions) {
+        return true;
+    } else {
+        return member.hasPermission(permissions);
+    }
 }

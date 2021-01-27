@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { client } from '..';
 import { Command } from '../models/command';
+import { checkUserCanRun } from '../utils/utils';
 
 export default class extends Command {
     constructor() {
@@ -17,7 +18,9 @@ export default class extends Command {
             'Cadence is here for all your musical needs. Here are the functions I can perform.'
         );
         client.commands.forEach((command) => {
-            messageEmbed.addField(`!${command.name}`, command.description);
+            if (checkUserCanRun(message.member!, command.permissions)) {
+                messageEmbed.addField(`!${command.name}`, command.description);
+            }
         });
 
         message.channel.send(messageEmbed);

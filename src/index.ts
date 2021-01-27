@@ -4,7 +4,7 @@ import { prefix } from './config.json';
 import { logger } from './logger';
 import { Cadence } from './models/client';
 import { MusicSettings } from './models/musicSettings';
-import { parseMessage } from './utils/utils';
+import { checkUserCanRun, parseMessage } from './utils/utils';
 
 // Initialise dotenv config - if you're doing config that way
 dotenv.config();
@@ -60,7 +60,9 @@ client.on('message', async (message: Message) => {
     const runnableCommand = client.commands.get(command);
 
     if (runnableCommand) {
-        runnableCommand.run(message, args);
+        if (checkUserCanRun(message.member!, runnableCommand.permissions)) {
+            runnableCommand.run(message, args);
+        }
     }
 });
 
