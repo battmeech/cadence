@@ -33,6 +33,7 @@ export default class extends MusicCommand {
                 );
             } else {
                 settings.skip(skipTo);
+                message.react('👍');
             }
         } else {
             if (settings.songs.length === 0) {
@@ -43,6 +44,7 @@ export default class extends MusicCommand {
                 );
             } else {
                 settings.skip();
+                message.react('👍');
             }
         }
     }
