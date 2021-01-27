@@ -1,12 +1,12 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { prefix } from '../config.json';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'playing',
-            description: 'Show what song is currently playing.',
+            name: language('PLAYING_COMMAND_NAME'),
+            description: language('PLAYING_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -27,15 +27,16 @@ export default class extends MusicCommand {
                 // Hopefully never end up here.
                 message.channel.send(
                     new MessageEmbed({
-                        description:
-                            "I'm playing a song that's no longer in the queue!",
+                        description: language(
+                            'PLAYING_COMMAND_UNRECOGNISED_SONG'
+                        ),
                     })
                 );
             }
         } else {
             message.channel.send(
                 new MessageEmbed({
-                    description: `▶️ I'm not playing anything right now, use \`${prefix}play\` to hear me play`,
+                    description: language('PLAYING_COMMAND_NOT_PLAYING'),
                 })
             );
         }

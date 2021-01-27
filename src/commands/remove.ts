@@ -1,12 +1,13 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { prefix } from '../config.json';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'remove',
-            description: 'Remove a song from the playlist.',
+            name: language('REMOVE_COMMAND_NAME'),
+            description: language('REMOVE_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -18,22 +19,18 @@ export default class extends MusicCommand {
         if (isNaN(songToRemove)) {
             return message.channel.send(
                 new MessageEmbed({
-                    description: `⚠️ You must give a numerical value to remove to, see \`${prefix}playlist\` to find out where the song is`,
+                    description: language('REMOVE_COMMAND_NON_NUMERICAL_VALUE'),
                 })
             );
         } else if (songToRemove > settings.songs.length || songToRemove < 1) {
             return message.channel.send(
                 new MessageEmbed({
-                    description: "⚠️ I don't have a song at that number",
+                    description: language('REMOVE_COMMAND_UNRECOGNISED_SONG'),
                 })
             );
         } else {
-            const removedSong = settings.removeSong(songToRemove);
-            message.channel.send(
-                new MessageEmbed({
-                    description: `${removedSong?.title} removed from the queue!`,
-                })
-            );
+            settings.removeSong(songToRemove);
+            message.react('👍');
         }
     }
 }

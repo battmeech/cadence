@@ -1,12 +1,12 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { prefix } from '../config.json';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'playlist',
-            description: 'View the current playlist.',
+            name: language('PLAYLIST_COMMAND_NAME'),
+            description: language('PLAYLIST_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -18,7 +18,7 @@ export default class extends MusicCommand {
         } else {
             message.channel.send(
                 new MessageEmbed({
-                    description: `🎶 No songs in queue yet, try the \`${prefix}add\` command`,
+                    description: language('NO_MUSIC_MESSAGE'),
                 })
             );
         }

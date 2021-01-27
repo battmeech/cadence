@@ -39,7 +39,7 @@ export default class extends MusicCommand {
         if (settings.songs.length === 0) {
             message.channel.send(
                 new MessageEmbed({
-                    description: language('PLAY_COMMAND_NO_MUSIC'),
+                    description: language('NO_MUSIC_MESSAGE'),
                 })
             );
         } else {

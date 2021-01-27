@@ -1,15 +1,14 @@
 import {
-    VoiceChannel,
-    VoiceConnection,
+    MessageEmbed,
     StreamDispatcher,
     TextChannel,
-    MessageEmbed,
+    VoiceChannel,
+    VoiceConnection,
 } from 'discord.js';
 import ytdl from 'ytdl-core';
 import { logger } from '../logger';
-import { Song } from './song';
-import { prefix } from '../config.json';
 import { language } from '../messages/language';
+import { Song } from './song';
 
 export class MusicSettings {
     /** The queued up songs */
@@ -178,33 +177,43 @@ export class MusicSettings {
     createEmbed(): MessageEmbed {
         const embed = new MessageEmbed();
 
-        embed.setTitle('Music Queue');
-        embed.setDescription(
-            'Welcome to the best music event on Discord, here is the set list:'
-        );
+        embed.setTitle(language('PLAYLIST_EMBED_HEADER'));
+        embed.setDescription(language('PLAYLIST_EMBED_DESCRIPTION'));
         this.songs.forEach((song) => {
             if (this.musicIndex === song.positionInQueue) {
                 embed.addField(
                     `${song.positionInQueue}. ${song.title} 🎵 ${
-                        this.playing ? 'Now playing' : 'On the deck'
+                        this.playing
+                            ? language('PLAYLIST_EMBED_NOW_PLAYING')
+                            : language('PLAYLIST_EMBED_ON_DECK')
                     } 🎵`,
-                    `Requested by ${song.requestingUser.username}`
+                    `${language('PLAYLIST_EMBED_REQUESTED_BY')} ${
+                        song.requestingUser.username
+                    }`
                 );
             } else {
                 embed.addField(
                     `${song.positionInQueue}. ${song.title}`,
-                    `Requested by ${song.requestingUser.username}`
+                    `${language('PLAYLIST_EMBED_REQUESTED_BY')} ${
+                        song.requestingUser.username
+                    }`
                 );
             }
         });
-        embed.addField('Settings', [
-            `Looping: ${this.loop ? 'On' : 'Off'}`,
-            `Volume: ${this.volume}`,
-            `Voice channel: ${
-                this.voiceChannel ? this.voiceChannel.name : 'Not connected'
+        embed.addField(language('PLAYLIST_EMBED_SETTINGS'), [
+            `${language('PLAYLIST_EMBED_LOOPING')}: ${
+                this.loop
+                    ? language('PLAYLIST_EMBED_LOOPING_ON')
+                    : language('PLAYLIST_EMBED_LOOPING_OFF')
+            }`,
+            `${language('PLAYLIST_EMBED_VOLUME')}: ${this.volume}`,
+            `${language('PLAYLIST_EMBED_VOICE_CHANNEL')}: ${
+                this.voiceChannel
+                    ? this.voiceChannel.name
+                    : language('PLAYLIST_EMBED_NOT_CONNECTED')
             }`,
         ]);
-        embed.setFooter([`Use +music help to find out more`]);
+        embed.setFooter(language('PLAYLIST_EMBED_FOOTER'));
 
         return embed;
     }

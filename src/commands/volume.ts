@@ -1,12 +1,12 @@
 import { Message, MessageEmbed } from 'discord.js';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'volume',
-            description:
-                'Adjust the volume of the music, can be set between 1 & 10.',
+            name: language('VOLUME_COMMAND_NAME'),
+            description: language('VOLUME_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -20,8 +20,7 @@ export default class extends MusicCommand {
             if (isNaN(newVolume) || newVolume > 10 || newVolume < 0) {
                 return message.channel.send(
                     new MessageEmbed({
-                        description:
-                            '⚠️ Please give a value for your volume between 1 and 10',
+                        description: language('VOLUME_COMMAND_INVALID_INPUT'),
                     })
                 );
             } else {
@@ -30,7 +29,10 @@ export default class extends MusicCommand {
         }
         message.reply(
             new MessageEmbed({
-                description: `🎶 Volume is set to ${settings.volume}`,
+                description: language(
+                    'VOLUME_COMMAND_RESPONSE_MESSAGE',
+                    settings.volume
+                ),
             })
         );
     }

@@ -1,12 +1,12 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { prefix } from '../config.json';
+import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 
 export default class extends MusicCommand {
     constructor() {
         super({
-            name: 'skip',
-            description: 'Skip to a specific song or skip just the one!',
+            name: language('SKIP_COMMAND_NAME'),
+            description: language('SKIP_COMMAND_HELPFUL_DESCRIPTION'),
         });
     }
 
@@ -21,13 +21,15 @@ export default class extends MusicCommand {
             if (isNaN(skipTo)) {
                 return message.channel.send(
                     new MessageEmbed({
-                        description: `You must give a numerical value to skip to, see \`${prefix}playlist\` to find out where your song is`,
+                        description: language(
+                            'SKIP_COMMAND_NON_NUMERICAL_VALUE'
+                        ),
                     })
                 );
             } else if (skipTo > settings.songs.length || skipTo < 1) {
                 return message.channel.send(
                     new MessageEmbed({
-                        description: "I don't have a song at that number",
+                        description: language('SKIP_COMMAND_UNRECOGNISED_SONG'),
                     })
                 );
             } else {
@@ -38,7 +40,7 @@ export default class extends MusicCommand {
             if (settings.songs.length === 0) {
                 message.channel.send(
                     new MessageEmbed({
-                        description: `🎶 No songs in queue yet, try the \`${prefix}add\` command`,
+                        description: language('NO_MUSIC_MESSAGE'),
                     })
                 );
             } else {
