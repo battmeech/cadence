@@ -26,8 +26,6 @@ export class Cadence extends Client {
         chooseLanguage(
             process.env.LANGUAGE || cadenceOptions?.language || 'english'
         );
-        // process.env.LANGUAGE =
-        //     process.env.LANGUAGE || cadenceOptions?.language || 'english';
 
         // Initialises all the commands found in the /commands directory
         const commandFiles = fs.readdirSync(__dirname + '/../commands');
