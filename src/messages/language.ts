@@ -12,3 +12,12 @@ export function language(message: keyof Messages, input?: any): string {
         return foundMessage(input);
     }
 }
+
+export function chooseLanguage(language: string) {
+    const _language = SupportedLanguages[language];
+    if (_language) {
+        process.env.LANGUAGE = language;
+    } else {
+        process.env.LANGUAGE = 'english';
+    }
+}

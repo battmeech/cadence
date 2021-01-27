@@ -2,7 +2,7 @@ import { Client, ClientOptions, Collection, Message } from 'discord.js';
 import fs from 'fs';
 import { prefix } from '../config.json';
 import { logger } from '../logger';
-import { language } from '../messages/language';
+import { chooseLanguage, language } from '../messages/language';
 import { checkUserCanRun, parseMessage } from '../utils/utils';
 import { Command } from './command';
 import { SupportedLanguage } from './messages';
@@ -13,7 +13,7 @@ import { MusicSettings } from './musicSettings';
  */
 export class Cadence extends Client {
     commands: Collection<string, Command> = new Collection();
-    language: SupportedLanguage = 'english';
+
     musicSettings: Collection<string, MusicSettings> = new Collection();
 
     constructor(
@@ -22,8 +22,12 @@ export class Cadence extends Client {
     ) {
         super(options);
 
-        if (cadenceOptions?.language) this.language = cadenceOptions.language;
-        process.env.LANGUAGE = this.language;
+        // Prefer to use language in environment variables if available
+        chooseLanguage(
+            process.env.LANGUAGE || cadenceOptions?.language || 'english'
+        );
+        // process.env.LANGUAGE =
+        //     process.env.LANGUAGE || cadenceOptions?.language || 'english';
 
         // Initialises all the commands found in the /commands directory
         const commandFiles = fs.readdirSync(__dirname + '/../commands');
