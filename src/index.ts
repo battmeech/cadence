@@ -57,7 +57,11 @@ client.on('message', async (message: Message) => {
 
     const { command, args } = parseMessage(message);
 
-    client.commands.get(command)?.run(message, args);
+    const runnableCommand = client.commands.get(command);
+
+    if (runnableCommand) {
+        runnableCommand.run(message, args);
+    }
 });
 
 client.login(process.env.TOKEN);
