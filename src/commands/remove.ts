@@ -1,5 +1,4 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { prefix } from '../config.json';
 import { language } from '../messages/language';
 import { MusicCommand } from '../models/musicCommand';
 

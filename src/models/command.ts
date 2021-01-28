@@ -1,4 +1,4 @@
-import { Message, PermissionString } from 'discord.js';
+import { Collection, Message, PermissionString } from 'discord.js';
 import { Cadence } from './client';
 
 interface ICommand {
@@ -7,6 +7,8 @@ interface ICommand {
     permissions?: PermissionString[];
     roles?: string[];
 }
+
+export type CommandsCollection = Collection<string, Command>;
 
 /**
  * Represents a basic command.

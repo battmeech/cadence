@@ -1,11 +1,11 @@
 import { Collection, Message, MessageEmbed } from 'discord.js';
 import { language } from '../messages/language';
 import { Cadence } from '../models/client';
-import { Command } from '../models/command';
+import { Command, CommandsCollection } from '../models/command';
 import { checkUserCanRun } from '../utils/utils';
 
 export default class extends Command {
-    commands: Collection<string, Command> = new Collection();
+    commands: CommandsCollection = new Collection();
 
     constructor() {
         super({

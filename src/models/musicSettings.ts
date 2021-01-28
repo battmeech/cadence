@@ -1,4 +1,5 @@
 import {
+    Collection,
     MessageEmbed,
     StreamDispatcher,
     TextChannel,
@@ -9,6 +10,8 @@ import ytdl from 'ytdl-core';
 import { logger } from '../logger';
 import { language } from '../messages/language';
 import { Song } from './song';
+
+export type MusicSettingsCollection = Collection<string, MusicSettings>;
 
 export class MusicSettings {
     /** The queued up songs */

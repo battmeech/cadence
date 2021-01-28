@@ -5,17 +5,17 @@ import message from '../events/message';
 import ready from '../events/ready';
 import { chooseLanguage } from '../messages/language';
 import { initCommands } from '../utils/utils';
-import { Command } from './command';
+import { CommandsCollection } from './command';
 import { SupportedLanguage } from './messages';
-import { MusicSettings } from './musicSettings';
+import { MusicSettingsCollection } from './musicSettings';
 
 /**
  * An extension of the discord.js Client class, which also includes commands.
  */
 export class Cadence extends Client {
-    commands: Collection<string, Command> = new Collection();
+    commands: CommandsCollection = new Collection();
 
-    musicSettings: Collection<string, MusicSettings> = new Collection();
+    musicSettings: MusicSettingsCollection = new Collection();
 
     constructor(
         cadenceOptions?: { token?: string; language?: SupportedLanguage },
