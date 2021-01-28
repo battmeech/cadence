@@ -50,6 +50,12 @@ export function checkUserCanRun(
     return canRun;
 }
 
+/**
+ * Go through the ../commands directory and scan the folder for anything which
+ * extends {@link Command}, then initialise the command and add it to the list of
+ * commands known to the client
+ * @param client
+ */
 export function initCommands(client: Cadence) {
     // Initialises all the commands found in the /commands directory
     const commandFiles = fs.readdirSync(__dirname + '/../commands');

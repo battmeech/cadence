@@ -1,4 +1,4 @@
-import { Collection, Message } from 'discord.js';
+import { Collection } from 'discord.js';
 import { Cadence } from './client';
 import { Command } from './command';
 
