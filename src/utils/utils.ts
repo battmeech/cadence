@@ -56,17 +56,18 @@ export function checkUserCanRun(
  * commands known to the client
  * @param client
  */
-export function initCommands(client: Cadence) {
+export async function initCommands(client: Cadence) {
     // Initialises all the commands found in the /commands directory
     const commandFiles = fs.readdirSync(__dirname + '/../commands');
     for (const file of commandFiles) {
-        import(`../commands/${file}`).then((commandClass) => {
-            const command = new commandClass.default();
+        const commandClass = await import(`../commands/${file}`);
 
+        if (commandClass.default) {
+            const command = new commandClass.default();
             if (command instanceof Command) {
                 command.init(client);
                 client.commands.set(command.name, command);
             }
-        });
+        }
     }
 }
