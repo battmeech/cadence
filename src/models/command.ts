@@ -6,6 +6,8 @@ interface ICommand {
     description?: string;
     permissions?: PermissionString[];
     roles?: string[];
+    /** A hidden command will not have it's help text displayed in server chats */
+    hidden?: boolean;
 }
 
 export type CommandsCollection = Collection<string, Command>;
@@ -18,12 +20,14 @@ export abstract class Command implements ICommand {
     description?: string;
     permissions?: PermissionString[];
     roles?: string[];
+    hidden?: boolean;
 
     constructor(command: ICommand) {
         this.name = command.name;
         this.description = command.description;
         this.permissions = command.permissions;
         this.roles = command.roles;
+        this.hidden = command.hidden;
     }
 
     /** The command that will be executed */

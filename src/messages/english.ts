@@ -14,6 +14,9 @@ const english: Messages = {
     HELP_COMMAND_EMBED_TITLE: '🎵 Available commands 🎵',
     HELP_COMMAND_EMBED_DESCRIPTION:
         'Cadence is here for all your musical needs. Here are the functions I can perform.',
+    HELP_COMMAND_PRIVATE_EMBED_TITLE: 'Secret commands',
+    HELP_COMMAND_PRIVATE_EMBED_DESCRIPTION:
+        "You're getting this message as you have permission to use some hidden commands.",
 
     JOIN_COMMAND_NAME: 'join',
     JOIN_COMMAND_HELPFUL_DESCRIPTION:

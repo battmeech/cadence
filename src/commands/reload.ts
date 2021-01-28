@@ -15,6 +15,7 @@ export default class extends Command {
             name: 'reload',
             description: '🤫 Secret command for developers only',
             roles: ['cadence developer'],
+            hidden: true,
         });
     }
 

@@ -15,25 +15,53 @@ export default class extends Command {
     }
 
     run(message: Message): void {
-        const messageEmbed = new MessageEmbed();
-        messageEmbed.setTitle(language('HELP_COMMAND_EMBED_TITLE'));
-        messageEmbed.setDescription(language('HELP_COMMAND_EMBED_DESCRIPTION'));
-        this.commands.forEach((command) => {
-            if (
-                checkUserCanRun(
-                    message.member!,
-                    command.permissions,
-                    command.roles
-                )
-            ) {
-                messageEmbed.addField(
+        const publicHelp = new MessageEmbed();
+        const privateHelp = new MessageEmbed();
+
+        publicHelp.setTitle(language('HELP_COMMAND_EMBED_TITLE'));
+        publicHelp.setDescription(language('HELP_COMMAND_EMBED_DESCRIPTION'));
+
+        privateHelp.setTitle(language('HELP_COMMAND_PRIVATE_EMBED_TITLE'));
+        privateHelp.setDescription(
+            language('HELP_COMMAND_PRIVATE_EMBED_DESCRIPTION')
+        );
+        this.commands
+            .filter(
+                (command) =>
+                    checkUserCanRun(
+                        message.member!,
+                        command.permissions,
+                        command.roles
+                    ) && !command.hidden
+            )
+            .forEach((command) =>
+                publicHelp.addField(
                     `!${command.name}`,
                     command.description || command.name
-                );
-            }
-        });
+                )
+            );
 
-        message.channel.send(messageEmbed);
+        this.commands
+            .filter(
+                (command) =>
+                    checkUserCanRun(
+                        message.member!,
+                        command.permissions,
+                        command.roles
+                    ) && !!command.hidden
+            )
+            .forEach((command) =>
+                privateHelp.addField(
+                    `!${command.name}`,
+                    command.description || command.name
+                )
+            );
+
+        message.channel.send(publicHelp);
+
+        if (privateHelp.fields.length > 0) {
+            message.author.send(privateHelp);
+        }
     }
 
     init(client: Cadence) {

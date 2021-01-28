@@ -15,6 +15,9 @@ const portuguese: Messages = {
     HELP_COMMAND_EMBED_TITLE: '🎵 Comandos disponíveis 🎵',
     HELP_COMMAND_EMBED_DESCRIPTION:
         'Cadence está aqui para todas as suas necessidades musicais. Aqui estão as funções que posso desempenhar.',
+    HELP_COMMAND_PRIVATE_EMBED_TITLE: 'Comandos secretos',
+    HELP_COMMAND_PRIVATE_EMBED_DESCRIPTION:
+        'Você está recebendo esta mensagem porque tem permissão para comandos ocultos.',
 
     JOIN_COMMAND_NAME: 'juntar',
     JOIN_COMMAND_HELPFUL_DESCRIPTION:
