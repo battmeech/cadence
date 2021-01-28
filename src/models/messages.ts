@@ -30,7 +30,7 @@ export type Messages = {
     PING_COMMAND_NAME: string;
     PING_COMMAND_HELPFUL_DESCRIPTION: string;
     PING_COMMAND_INITIAL_MESSAGE: string;
-    PING_COMMAND_EDITED_MESSAGE: (latency: string) => string;
+    PING_COMMAND_EDITED_MESSAGE: (input: string) => string;
 
     PLAY_COMMAND_NAME: string;
     PLAY_COMMAND_HELPFUL_DESCRIPTION: string;
@@ -59,7 +59,7 @@ export type Messages = {
     VOLUME_COMMAND_NAME: string;
     VOLUME_COMMAND_HELPFUL_DESCRIPTION: string;
     VOLUME_COMMAND_INVALID_INPUT: string;
-    VOLUME_COMMAND_RESPONSE_MESSAGE: (volume: string) => string;
+    VOLUME_COMMAND_RESPONSE_MESSAGE: (input: string) => string;
 
     ERROR_WHEN_FETCHING_VIDEO_INFO: string;
     ERROR_WHEN_JOINING_VOICE_CHANNEL: string;

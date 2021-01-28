@@ -1,5 +1,8 @@
 import { GuildMember, Message, PermissionString } from 'discord.js';
+import fs from 'fs';
 import config from '../config.json';
+import { Cadence } from '../models/client';
+import { Command } from '../models/command';
 
 /**
  * @description Parse the message into a command and a list of arguments which have been provided
@@ -45,4 +48,19 @@ export function checkUserCanRun(
     }
 
     return canRun;
+}
+
+export function initCommands(client: Cadence) {
+    // Initialises all the commands found in the /commands directory
+    const commandFiles = fs.readdirSync(__dirname + '/../commands');
+    for (const file of commandFiles) {
+        import(`../commands/${file}`).then((commandClass) => {
+            const command = new commandClass.default();
+
+            if (command instanceof Command) {
+                command.init(client);
+                client.commands.set(command.name, command);
+            }
+        });
+    }
 }
