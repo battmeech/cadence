@@ -58,7 +58,9 @@ export function checkUserCanRun(
  */
 export async function initCommands(client: Cadence) {
     // Initialises all the commands found in the /commands directory
-    const commandFiles = fs.readdirSync(__dirname + '/../commands');
+    const commandFileDir = `${__dirname}/../commands`;
+
+    const commandFiles = fs.readdirSync(commandFileDir);
     for (const file of commandFiles) {
         const commandClass = await import(`../commands/${file}`);
 

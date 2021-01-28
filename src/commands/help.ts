@@ -26,7 +26,10 @@ export default class extends Command {
                     command.roles
                 )
             ) {
-                messageEmbed.addField(`!${command.name}`, command.description);
+                messageEmbed.addField(
+                    `!${command.name}`,
+                    command.description || command.name
+                );
             }
         });
 
