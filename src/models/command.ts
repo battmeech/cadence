@@ -13,6 +13,10 @@ interface ICommand {
      * user is an admin. Set to true by default
      */
     checkAdmin?: boolean;
+    /**
+     * If set to true, only developers in the config.json will be able to run this command
+     */
+    developerCommand?: boolean;
 }
 
 export type CommandsCollection = Collection<string, Command>;
@@ -26,6 +30,7 @@ export abstract class Command implements ICommand {
     permissions?: PermissionString[];
     roles?: string[];
     hidden?: boolean;
+    developerCommand?: boolean;
     checkAdmin: boolean = true;
 
     constructor(command: ICommand) {
@@ -34,6 +39,7 @@ export abstract class Command implements ICommand {
         this.permissions = command.permissions;
         this.roles = command.roles;
         this.hidden = command.hidden;
+        this.developerCommand = command.developerCommand;
         if (command.checkAdmin !== undefined) {
             this.checkAdmin = command.checkAdmin;
         }

@@ -6,9 +6,8 @@ import { Command } from './command';
  */
 export abstract class DeveloperCommand extends Command {
     cadence!: Cadence;
-    roles = ['cadence developer'];
     hidden = true;
-    checkAdmin = false;
+    developerCommand = true;
 
     init(client: Cadence) {
         this.cadence = client;

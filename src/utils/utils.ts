@@ -1,7 +1,6 @@
-import { GuildMember, Message, PermissionString } from 'discord.js';
+import { GuildMember, Message } from 'discord.js';
 import fs from 'fs';
 import config from '../config.json';
-import { logger } from '../logger';
 import { Cadence } from '../models/client';
 import { Command } from '../models/command';
 
@@ -33,22 +32,29 @@ export function checkUserCanRun(
     member: GuildMember,
     command: Command
 ): boolean {
-    let canRun: boolean = true;
-    const { checkAdmin, roles, permissions } = command;
+    const { checkAdmin, roles, permissions, developerCommand } = command;
 
-    if (checkAdmin) {
-        // If there is a role check, and the user is not an admin, ensure they have correct roles
-        if (roles && checkAdmin && !member.hasPermission('ADMINISTRATOR')) {
-            canRun = member.roles.cache.some((role) =>
-                roles.includes(role.name.toLowerCase())
-            );
+    // Firstly check if it's a developer command. If so,
+    // only let developers perform this, and perform no other
+    // checks
+    if (developerCommand) {
+        if (config.developerIds.includes(member.id)) {
+            return true;
+        } else {
+            return false;
         }
-    } else {
-        if (roles) {
-            canRun = member.roles.cache.some((role) =>
-                roles.includes(role.name.toLowerCase())
-            );
-        }
+    }
+
+    let canRun: boolean = true;
+
+    if (checkAdmin && member.hasPermission('ADMINISTRATOR')) {
+        // Admins are allowed to bypass the role check in this scenario
+        canRun = true;
+    } else if (roles) {
+        // Admins cannot bypass the role check here
+        canRun = member.roles.cache.some((role) =>
+            roles.includes(role.name.toLowerCase())
+        );
     }
 
     // If canRun is still true, also check they have any required permissions
