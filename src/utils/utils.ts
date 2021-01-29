@@ -1,6 +1,7 @@
 import { GuildMember, Message, PermissionString } from 'discord.js';
 import fs from 'fs';
 import config from '../config.json';
+import { logger } from '../logger';
 import { Cadence } from '../models/client';
 import { Command } from '../models/command';
 
@@ -30,21 +31,29 @@ export function parseMessage(
  */
 export function checkUserCanRun(
     member: GuildMember,
-    permissions?: PermissionString[],
-    roles?: string[]
+    command: Command
 ): boolean {
     let canRun: boolean = true;
+    const { checkAdmin, roles, permissions } = command;
 
-    // If there is a role check, and the user is not an admin, ensure they have correct roles
-    if (roles && !member.hasPermission('ADMINISTRATOR')) {
-        canRun = member.roles.cache.some((role) =>
-            roles.includes(role.name.toLowerCase())
-        );
+    if (checkAdmin) {
+        // If there is a role check, and the user is not an admin, ensure they have correct roles
+        if (roles && checkAdmin && !member.hasPermission('ADMINISTRATOR')) {
+            canRun = member.roles.cache.some((role) =>
+                roles.includes(role.name.toLowerCase())
+            );
+        }
+    } else {
+        if (roles) {
+            canRun = member.roles.cache.some((role) =>
+                roles.includes(role.name.toLowerCase())
+            );
+        }
     }
 
     // If canRun is still true, also check they have any required permissions
     if (permissions && canRun) {
-        canRun = member.hasPermission(permissions);
+        canRun = member.hasPermission(permissions, { checkAdmin });
     }
 
     return canRun;

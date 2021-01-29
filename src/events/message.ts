@@ -20,14 +20,8 @@ export default function (message: Message, client: Cadence) {
 
     const runnableCommand = client.commands.get(command);
 
-    if (
-        runnableCommand &&
-        checkUserCanRun(
-            message.member!,
-            runnableCommand.permissions,
-            runnableCommand.roles
-        )
-    ) {
+    // Check the user has permissions to run the command before executing it
+    if (runnableCommand && checkUserCanRun(message.member!, runnableCommand)) {
         runnableCommand.run(message, args);
     }
 }

@@ -25,14 +25,12 @@ export default class extends Command {
         privateHelp.setDescription(
             language('HELP_COMMAND_PRIVATE_EMBED_DESCRIPTION')
         );
+
+        // Check the user can run a command before giving them info on it
         this.commands
             .filter(
                 (command) =>
-                    checkUserCanRun(
-                        message.member!,
-                        command.permissions,
-                        command.roles
-                    ) && !command.hidden
+                    checkUserCanRun(message.member!, command) && !command.hidden
             )
             .forEach((command) =>
                 publicHelp.addField(
@@ -41,14 +39,12 @@ export default class extends Command {
                 )
             );
 
+        // Do the same for hidden commands
         this.commands
             .filter(
                 (command) =>
-                    checkUserCanRun(
-                        message.member!,
-                        command.permissions,
-                        command.roles
-                    ) && !!command.hidden
+                    checkUserCanRun(message.member!, command) &&
+                    !!command.hidden
             )
             .forEach((command) =>
                 privateHelp.addField(

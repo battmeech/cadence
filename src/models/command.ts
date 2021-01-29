@@ -8,6 +8,11 @@ interface ICommand {
     roles?: string[];
     /** A hidden command will not have it's help text displayed in server chats */
     hidden?: boolean;
+    /**
+     * If set to false, any permission checks will not be overridden if the
+     * user is an admin. Set to true by default
+     */
+    checkAdmin?: boolean;
 }
 
 export type CommandsCollection = Collection<string, Command>;
@@ -21,6 +26,7 @@ export abstract class Command implements ICommand {
     permissions?: PermissionString[];
     roles?: string[];
     hidden?: boolean;
+    checkAdmin: boolean = true;
 
     constructor(command: ICommand) {
         this.name = command.name;
@@ -28,6 +34,9 @@ export abstract class Command implements ICommand {
         this.permissions = command.permissions;
         this.roles = command.roles;
         this.hidden = command.hidden;
+        if (command.checkAdmin !== undefined) {
+            this.checkAdmin = command.checkAdmin;
+        }
     }
 
     /** The command that will be executed */
