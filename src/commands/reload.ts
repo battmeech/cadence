@@ -1,21 +1,18 @@
 import { Collection, Message } from 'discord.js';
 import { Cadence } from '../models/client';
 import { Command } from '../models/command';
+import { DeveloperCommand } from '../models/developerCommand';
 import { initCommands } from '../utils/utils';
 
 /**
  * This command is intended for development purposes only, to be able to reload
  * without restarting the bot
  */
-export default class extends Command {
-    cadence!: Cadence;
-
+export default class extends DeveloperCommand {
     constructor() {
         super({
             name: 'reload',
             description: '🤫 Secret command for developers only',
-            roles: ['cadence developer'],
-            hidden: true,
         });
     }
 
@@ -38,9 +35,5 @@ export default class extends Command {
 
         await initCommands(this.cadence);
         message.react('👍');
-    }
-
-    init(client: Cadence) {
-        this.cadence = client;
     }
 }

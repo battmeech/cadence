@@ -1,8 +1,8 @@
 import { Message } from 'discord.js';
 import { language } from '../messages/language';
-import { MusicCommand } from '../models/musicCommand';
+import { DJCommand } from '../models/djCommand';
 
-export default class extends MusicCommand {
+export default class extends DJCommand {
     constructor() {
         super({
             name: language('LOOP_COMMAND_NAME'),
