@@ -1,6 +1,4 @@
 import { Collection, Message } from 'discord.js';
-import { Cadence } from '../models/client';
-import { Command } from '../models/command';
 import { DeveloperCommand } from '../models/developerCommand';
 import { initCommands } from '../utils/utils';
 
