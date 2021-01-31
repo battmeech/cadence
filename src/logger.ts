@@ -13,7 +13,7 @@ export const logger = winston.createLogger({
     defaultMeta: { service: 'cadence' },
     transports: [
         new winston.transports.Console({
-            level: process.env.LOG_LEVEL,
+            level: process.env.LOG_LEVEL || 'info',
             handleExceptions: true,
         }),
     ],
