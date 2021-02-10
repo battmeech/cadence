@@ -14,7 +14,7 @@ export default class extends DeveloperCommand {
         const messageToReturn = new MessageEmbed({ title: 'Invite Link' });
         const inviteLink =
             'https://discord.com/api/oauth2/authorize?scope=bot&client_id=';
-        messageToReturn.setFooter(`${inviteLink}${this.cadence.user?.id}`);
+        messageToReturn.setURL(`${inviteLink}${this.cadence.user?.id}`);
         message.channel.send(messageToReturn);
     }
 }
