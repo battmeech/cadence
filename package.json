@@ -9,7 +9,6 @@
         "build": "tsc",
         "build:watch": "tsc -w",
         "test": "jest --coverage",
-        "postinstall": "npm run build",
         "test:watch": "jest --coverage --watchAll"
     },
     "repository": {
